@@ -83,7 +83,7 @@ function update_state!(objfun, constraints, state, parents::AbstractVector{IT}, 
     end
 
     # perform mutation
-    mutate!(offspring, method, constraints, rng=rng)
+    mutate!(offspring, method, constraints, offspringSize, rng=rng)
 
     # calculate fitness of the population
     evaluate!(objfun, state.fitpop, offspring, constraints)
@@ -113,9 +113,8 @@ function recombine!(offspring, parents, selected, method, n=length(selected);
 
 end
 
-function mutate!(population, method, constraints;
+function mutate!(population, method, constraints, n=length(population);
                  rng::AbstractRNG=default_rng())
-    n = length(population)
     for i in 1:n
         if rand(rng) < method.mutationRate
             method.mutation(population[i], rng=rng)
